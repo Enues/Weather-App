@@ -1,19 +1,27 @@
-import { useContext, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { getWeather } from "../../hooks/weather/api";
-import { Context } from "../../hooks/weather/useWeather";
+import { useWeather } from "../../hooks/weather/useWeather";
 
 const WeatherSearchForm = () => {
 
-    const [weatherData, setWeatherData] = useContext(Context);
-    const [cityName, setCityName] = useState<string>();
+    const {setWeatherData} = useWeather();
+    const [cityName, setCityName] = useState<string>("Ain Smara");
     const [error, setError] = useState<string>("");
 
     const submit = (e: FormEvent<HTMLFormElement>) => {
         setError("")
         e.preventDefault();
-        getWeather({cityName: cityName ?? "Paris"})
+        console.log(cityName)
+        getWeather({cityName: cityName})
         .then((data) => {
             console.log(data)
+            setWeatherData({
+                cityName: data.name,
+                temperature: data.main.temp,
+                weatherDescription: data.weather[0].description,
+                humidity: data.main.humidity,
+                windSpeed: data.wind.speed,
+            })
         }).catch((error) => {
             setError(error.message)
         })

@@ -1,4 +1,4 @@
-import { createContext} from "react";
+import { createContext, useContext} from "react";
 
 export type WeatherData = {
     cityName: string,
@@ -14,4 +14,15 @@ export type WeatherContextType = {
 }
 
 export const Context = createContext<WeatherContextType| null>(null)
+
+export function useWeather(){
+    const ctx = useContext(Context);
+
+    if(!ctx){
+        throw new Error("weather context is empty");
+    }
+
+    return ctx;
+}
+
 
