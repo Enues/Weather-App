@@ -1,12 +1,15 @@
-import { useState, type FormEvent } from "react";
+import { useContext, useState, type FormEvent } from "react";
 import { getWeather } from "../../hooks/weather/api";
+import { Context } from "../../hooks/weather/useWeather";
 
 const WeatherSearchForm = () => {
 
+    const [weatherData, setWeatherData] = useContext(Context);
     const [cityName, setCityName] = useState<string>();
     const [error, setError] = useState<string>("");
 
     const submit = (e: FormEvent<HTMLFormElement>) => {
+        setError("")
         e.preventDefault();
         getWeather({cityName: cityName ?? "Paris"})
         .then((data) => {
